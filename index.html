@@ -1,74 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Obey Kinchi Trading Bot</title>
-  <style>
-    body{
-      margin:0;
-      font-family:Arial,sans-serif;
-      background:#121212;
-      color:white;
-      text-align:center;
-    }
-    header{
-      background:#00b894;
-      padding:20px;
-      font-size:28px;
-      font-weight:bold;
-    }
-    .card{
-      margin:20px;
-      padding:20px;
-      background:#1e1e1e;
-      border-radius:12px;
-    }
-    button{
-      background:#00b894;
-      color:white;
-      border:none;
-      padding:12px 20px;
-      border-radius:8px;
-      font-size:16px;
-      cursor:pointer;
-      margin:5px;
-    }
-    input{
-      width:90%;
-      padding:10px;
-      margin:10px;
-      border-radius:8px;
-      border:none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obey Kinchi Trading Bot</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#111827;
+color:white;
+}
+
+header{
+background:#10b981;
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+max-width:500px;
+margin:20px auto;
+padding:15px;
+}
+
+.card{
+background:#1f2937;
+padding:20px;
+margin-bottom:15px;
+border-radius:12px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:10px;
+border:none;
+border-radius:8px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#10b981;
+color:white;
+border:none;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#059669;
+}
+
+h2,h3{
+margin-top:0;
+}
+
+.status{
+color:#fbbf24;
+font-weight:bold;
+}
+
+.balance{
+font-size:24px;
+color:#22c55e;
+}
+</style>
+
 </head>
+
 <body>
 
-<header>🤖 Obey Kinchi Trading Bot</header>
+<header>
+🤖 Obey Kinchi Trading Bot
+</header>
+
+<div class="container">
 
 <div class="card">
-  <h2>Welcome</h2>
-  <p>Connect your Deriv API Token to begin.</p>
+<h2>Login</h2>
 
-  <input type="password" placeholder="Enter Deriv API Token">
+<input type="password" placeholder="Enter Deriv API Token">
 
-  <br>
+<button>Connect</button>
 
-  <button>Connect</button>
-  <button>Start Bot</button>
-  <button>Stop Bot</button>
+<p class="status">Status: Disconnected</p>
 </div>
 
 <div class="card">
-  <h3>Account Balance</h3>
-  <p>$0.00</p>
+<h3>Trading Settings</h3>
+
+<input type="number" placeholder="Stake">
+
+<input type="number" placeholder="Stop Loss">
+
+<input type="number" placeholder="Take Profit">
+
+<button>Start Bot</button>
+
+<button>Stop Bot</button>
 </div>
 
 <div class="card">
-  <h3>Status</h3>
-  <p>Disconnected</p>
+<h3>Account Balance</h3>
+<p class="balance">$0.00</p>
+</div>
+
+<div class="card">
+<h3>Developer</h3>
+<p><b>Created by Cael Langat (Obey Kinchi)</b></p>
+</div>
+
 </div>
 
 </body>
 </html>
+ 
