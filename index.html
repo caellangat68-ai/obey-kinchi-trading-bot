@@ -16,24 +16,637 @@ body{
     font-family:Arial,sans-serif;
     background:#111827;
     color:#ffffff;
-}
-
-a{
-    text-decoration:none;
-    color:white;
+    min-height:100vh;
 }
 
 header{
-    background:#10b981;
-    padding:20px;
+    background:
+        linear-gradient(rgba(3,18,40,.55),rgba(3,18,40,.75)),
+        url("obey-kinchi-banner.jpg") center/cover no-repeat;
+    padding:55px 20px;
     text-align:center;
 }
 
 header h1{
     font-size:32px;
+    margin-bottom:10px;
 }
 
 header p{
-    margin-top:8px;
     font-size:16px;
 }
+
+.container{
+    width:100%;
+    max-width:900px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:#1f2937;
+    padding:22px;
+    margin-bottom:18px;
+    border-radius:14px;
+    box-shadow:0 0 12px rgba(0,0,0,.25);
+}
+
+.card h2{
+    margin-bottom:15px;
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px;
+    margin:8px 0 15px;
+    border:none;
+    border-radius:8px;
+    background:#374151;
+    color:white;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    margin:8px 0;
+    background:#10b981;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#059669;
+}
+
+.stop-button{
+    background:#dc2626;
+}
+
+.stop-button:hover{
+    background:#b91c1c;
+}
+
+.balance{
+    font-size:30px;
+    color:#22c55e;
+    font-weight:bold;
+}
+
+.profit{
+    color:#22c55e;
+}
+
+.status{
+    color:#fbbf24;
+    font-weight:bold;
+}
+
+.status.running{
+    color:#22c55e;
+}
+
+.market-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.market-button{
+    margin:0;
+}
+
+.bot-card{
+    background:#374151;
+    padding:18px;
+    margin-top:12px;
+    border-radius:10px;
+}
+
+.bot-card p{
+    margin:8px 0;
+    color:#d1d5db;
+}
+
+.bot-card button{
+    margin-bottom:0;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.stat-box{
+    background:#374151;
+    padding:15px;
+    border-radius:10px;
+}
+
+.stat-box strong{
+    display:block;
+    font-size:22px;
+    margin-top:5px;
+}
+
+.message{
+    display:none;
+    margin-top:10px;
+    padding:10px;
+    background:#064e3b;
+    border-radius:8px;
+    color:#a7f3d0;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#9ca3af;
+}
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:25px;
+    }
+
+    .market-grid,
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🤖 Obey Kinchi Trading Bot</h1>
+    <p>Smart Deriv Trading Dashboard</p>
+</header>
+
+<div class="container">
+
+    <!-- ACCOUNT OVERVIEW -->
+    <div class="card">
+        <h2>💰 Account Overview</h2>
+
+        <p>Account Balance</p>
+        <h1 class="balance" id="balance">$0.00 USD</h1>
+
+        <br>
+
+        <p>Profit / Loss Today</p>
+        <h3 class="profit" id="profit">+$0.00</h3>
+
+        <br>
+
+        <p>Win Rate</p>
+        <h3 id="winRate">0%</h3>
+    </div>
+
+    <!-- DERIV CONNECTION -->
+    <div class="card">
+        <h2>🔐 Deriv Connection</h2>
+
+        <p>Enter your Deriv API Token</p>
+
+        <input
+            type="password"
+            id="apiToken"
+            placeholder="Enter Deriv API Token"
+        >
+
+        <button onclick="connectDeriv()">🔗 CONNECT</button>
+
+        <p class="status" id="connectionStatus">
+            Status: Disconnected
+        </p>
+    </div>
+
+    <!-- MARKET SELECTION -->
+    <div class="card">
+        <h2>📊 Select Market</h2>
+
+        <p>Choose your preferred Volatility Index</p>
+
+        <br>
+
+        <div class="market-grid">
+
+            <button onclick="selectMarket('Volatility 10 (1s)')">
+                Vol 10 (1s)
+            </button>
+
+            <button onclick="selectMarket('Volatility 25 (1s)')">
+                Vol 25 (1s)
+            </button>
+
+            <button onclick="selectMarket('Volatility 50 (1s)')">
+                Vol 50 (1s)
+            </button>
+
+            <button onclick="selectMarket('Volatility 75 (1s)')">
+                Vol 75 (1s)
+            </button>
+
+            <button onclick="selectMarket('Volatility 100 (1s)')">
+                Vol 100 (1s)
+            </button>
+
+        </div>
+
+        <br>
+
+        <p>
+            Selected Market:
+            <strong id="selectedMarket">None</strong>
+        </p>
+    </div>
+
+    <!-- AI TRADING BOTS -->
+    <div class="card">
+
+        <h2>🤖 AI Trading Bots</h2>
+
+        <div class="bot-card">
+            <h3>Even / Odd Bot</h3>
+            <p>⭐⭐⭐⭐⭐</p>
+            <p>Automated Even & Odd digit trading interface.</p>
+
+            <button onclick="startBotType('Even / Odd Bot')">
+                ▶ START BOT
+            </button>
+        </div>
+
+        <div class="bot-card">
+            <h3>Over / Under Bot</h3>
+            <p>⭐⭐⭐⭐⭐</p>
+            <p>Smart Over & Under trading interface.</p>
+
+            <button onclick="startBotType('Over / Under Bot')">
+                ▶ START BOT
+            </button>
+        </div>
+
+        <div class="bot-card">
+            <h3>Matches / Differs Bot</h3>
+            <p>⭐⭐⭐⭐⭐</p>
+            <p>Advanced Matches & Differs trading interface.</p>
+
+            <button onclick="startBotType('Matches / Differs Bot')">
+                ▶ START BOT
+            </button>
+        </div>
+
+        <div class="bot-card">
+            <h3>Scalper Bot</h3>
+            <p>⭐⭐⭐⭐⭐</p>
+            <p>High-speed trading interface.</p>
+
+            <button onclick="startBotType('Scalper Bot')">
+                ▶ START BOT
+            </button>
+        </div>
+
+    </div>
+
+    <!-- TRADING SETTINGS -->
+    <div class="card">
+
+        <h2>⚙️ Trading Settings</h2>
+
+        <label for="stake">Stake (USD)</label>
+
+        <input
+            type="number"
+            id="stake"
+            value="0.35"
+            min="0"
+            step="0.01"
+        >
+
+        <label for="stopLoss">Stop Loss (USD)</label>
+
+        <input
+            type="number"
+            id="stopLoss"
+            value="5"
+            min="0"
+            step="0.01"
+        >
+
+        <label for="takeProfit">Take Profit (USD)</label>
+
+        <input
+            type="number"
+            id="takeProfit"
+            value="20"
+            min="0"
+            step="0.01"
+        >
+
+        <label for="martingale">Martingale</label>
+
+        <select id="martingale">
+            <option value="OFF">OFF</option>
+            <option value="ON">ON</option>
+        </select>
+
+        <button onclick="saveSettings()">
+            💾 SAVE SETTINGS
+        </button>
+
+        <div class="message" id="settingsMessage">
+            Settings saved successfully.
+        </div>
+
+    </div>
+
+    <!-- BOT CONTROL -->
+    <div class="card">
+
+        <h2>🎮 Bot Control</h2>
+
+        <button onclick="startBot()">
+            ▶ START BOT
+        </button>
+
+        <button class="stop-button" onclick="stopBot()">
+            ■ STOP BOT
+        </button>
+
+        <p>
+            Status:
+            <span class="status" id="botStatus">Stopped</span>
+        </p>
+
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="card">
+
+        <h2>📈 Performance Overview</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-box">
+                Total Trades
+                <strong id="totalTrades">0</strong>
+            </div>
+
+            <div class="stat-box">
+                Total Wins
+                <strong id="totalWins">0</strong>
+            </div>
+
+            <div class="stat-box">
+                Total Losses
+                <strong id="totalLosses">0</strong>
+            </div>
+
+            <div class="stat-box">
+                Win Rate
+                <strong id="performanceWinRate">0%</strong>
+            </div>
+
+            <div class="stat-box">
+                Total Profit
+                <strong id="totalProfit">$0.00</strong>
+            </div>
+
+            <div class="stat-box">
+                Total Loss
+                <strong id="totalLoss">$0.00</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT TRADES -->
+    <div class="card">
+
+        <h2>📜 Recent Trades</h2>
+
+        <p id="tradeHistory">No trades yet.</p>
+
+    </div>
+
+    <!-- DEVELOPER -->
+    <div class="card">
+
+        <h2>👨‍💻 Developer</h2>
+
+        <p>
+            <strong>Created by Cael Langat (Obey Kinchi)</strong>
+        </p>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Obey Kinchi Trading Bot
+</footer>
+
+<script>
+
+function connectDeriv(){
+
+    const token =
+        document.getElementById("apiToken").value.trim();
+
+    const status =
+        document.getElementById("connectionStatus");
+
+    if(token === ""){
+
+        alert("Please enter your Deriv API Token.");
+
+        return;
+    }
+
+    status.textContent = "Status: Connecting...";
+
+    const ws = new WebSocket(
+        "wss://ws.derivws.com/websockets/v3?app_id=1089"
+    );
+
+    ws.onopen = function(){
+
+        ws.send(
+            JSON.stringify({
+                authorize: token
+            })
+        );
+    };
+
+    ws.onmessage = function(event){
+
+        const data = JSON.parse(event.data);
+
+        if(data.error){
+
+            status.textContent =
+                "Status: Connection Failed";
+
+            alert(data.error.message);
+
+            ws.close();
+
+            return;
+        }
+
+        if(data.msg_type === "authorize"){
+
+            status.textContent =
+                "Status: Connected";
+
+            document.getElementById("balance")
+                .textContent =
+                "$" +
+                Number(data.authorize.balance).toFixed(2) +
+                " " +
+                data.authorize.currency;
+        }
+    };
+
+    ws.onerror = function(){
+
+        status.textContent =
+            "Status: Connection Error";
+    };
+}
+
+function selectMarket(market){
+
+    document.getElementById("selectedMarket")
+        .textContent = market;
+}
+
+function startBotType(botName){
+
+    const status =
+        document.getElementById("botStatus");
+
+    status.textContent =
+        "Running — " + botName;
+
+    status.classList.add("running");
+
+    alert(
+        botName +
+        " selected. This interface is currently a demo."
+    );
+}
+
+function startBot(){
+
+    const status =
+        document.getElementById("botStatus");
+
+    status.textContent = "Running";
+
+    status.classList.add("running");
+}
+
+function stopBot(){
+
+    const status =
+        document.getElementById("botStatus");
+
+    status.textContent = "Stopped";
+
+    status.classList.remove("running");
+}
+
+function saveSettings(){
+
+    const stake =
+        document.getElementById("stake").value;
+
+    const stopLoss =
+        document.getElementById("stopLoss").value;
+
+    const takeProfit =
+        document.getElementById("takeProfit").value;
+
+    const martingale =
+        document.getElementById("martingale").value;
+
+    localStorage.setItem("stake", stake);
+    localStorage.setItem("stopLoss", stopLoss);
+    localStorage.setItem("takeProfit", takeProfit);
+    localStorage.setItem("martingale", martingale);
+
+    const message =
+        document.getElementById("settingsMessage");
+
+    message.style.display = "block";
+
+    setTimeout(function(){
+
+        message.style.display = "none";
+
+    },3000);
+}
+
+window.addEventListener("load", function(){
+
+    const savedStake =
+        localStorage.getItem("stake");
+
+    const savedStopLoss =
+        localStorage.getItem("stopLoss");
+
+    const savedTakeProfit =
+        localStorage.getItem("takeProfit");
+
+    const savedMartingale =
+        localStorage.getItem("martingale");
+
+    if(savedStake){
+
+        document.getElementById("stake").value =
+            savedStake;
+    }
+
+    if(savedStopLoss){
+
+        document.getElementById("stopLoss").value =
+            savedStopLoss;
+    }
+
+    if(savedTakeProfit){
+
+        document.getElementById("takeProfit").value =
+            savedTakeProfit;
+    }
+
+    if(savedMartingale){
+
+        document.getElementById("martingale").value =
+            savedMartingale;
+    }
+
+});
+
+</script>
+
+</body>
+                </html>
