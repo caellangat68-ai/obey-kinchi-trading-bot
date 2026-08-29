@@ -3,7 +3,7 @@
 // Deriv connection + account balance
 // ============================================
 
-const APP_ID = "33YEgeMEMABjNTsoZWwU5";
+const APP_ID = "pat_8c80790aad633982c5164dae7ae60906f8218502407da70c0e0285df5c66bfd5
 const API_BASE = "https://api.derivws.com";
 
 let ws = null;
